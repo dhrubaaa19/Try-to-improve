@@ -41,25 +41,45 @@
 
     .carousel {
       display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
       transition: transform 0.8s ease-in-out;
-      padding: 20px 0;
     }
 
     .feedback-card {
       flex: 0 0 60%;
-      margin: 0 10%;
       background-color: #fff;
       border-radius: 12px;
       padding: 30px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
       text-align: center;
-      transition: transform 0.4s ease, filter 0.4s ease;
+      opacity: 0;
+      transform: scale(0.9) translateX(30px);
+      filter: blur(2px) brightness(0.8);
+      transition: all 0.8s ease-in-out;
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      margin: auto;
+      z-index: 0;
     }
 
-    .feedback-card.blur {
-      filter: blur(2px) brightness(0.8);
-      transform: scale(0.9);
+    .feedback-card.active {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+      filter: none;
+      z-index: 2;
+    }
+
+    .feedback-card.prev,
+    .feedback-card.next {
+      opacity: 0.6;
+      filter: blur(2px);
+      z-index: 1;
+      transform: scale(0.9) translateX(-100%);
     }
 
     .feedback-stars {
@@ -86,6 +106,13 @@
       color: #777;
       font-size: 14px;
     }
+
+    @media (max-width: 768px) {
+      .feedback-card {
+        left: 10%;
+        right: 10%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -97,7 +124,7 @@
 <section class="feedbacks-section">
   <h2 class="feedbacks-title">What Our Customers Says</h2>
 
-  <div class="carousel-container">
+  <div class="carousel-container" style="height: 300px;">
     <div class="carousel" id="carousel">
       <div class="feedback-card">
         <div class="feedback-stars">★★★★★</div>
@@ -137,33 +164,29 @@
 </footer>
 
 <script>
-  const carousel = document.getElementById('carousel');
-  const cards = Array.from(carousel.children);
-  let index = 0;
+  const cards = document.querySelectorAll('.feedback-card');
+  let current = 0;
   const interval = 7000;
 
-  function updateCarousel() {
-    const cardWidth = cards[0].offsetWidth + 20; // card + margin
-    const centerOffset = (carousel.offsetWidth - cards[0].offsetWidth) / 2;
-    const scrollPosition = index * (cardWidth + 20) - centerOffset;
-
-    carousel.style.transform = `translateX(-${scrollPosition}px)`;
-
+  function showCard(index) {
     cards.forEach((card, i) => {
-      card.classList.remove('blur');
-      if (i !== index) {
-        card.classList.add('blur');
+      card.classList.remove('active', 'prev', 'next');
+      if (i === index) {
+        card.classList.add('active');
+      } else if (i === (index + 1) % cards.length) {
+        card.classList.add('next');
+      } else if (i === (index - 1 + cards.length) % cards.length) {
+        card.classList.add('prev');
       }
     });
   }
 
   setInterval(() => {
-    index = (index + 1) % cards.length;
-    updateCarousel();
+    current = (current + 1) % cards.length;
+    showCard(current);
   }, interval);
 
-  window.addEventListener("load", updateCarousel);
-  window.addEventListener("resize", updateCarousel);
+  window.addEventListener('load', () => showCard(current));
 </script>
 
 </body>
