@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Customer Feedback Carousel</title>
+  <title>Customer Feedback</title>
   <style>
     body {
       font-family: Georgia, serif;
@@ -22,57 +22,55 @@
     }
 
     .feedbacks-section {
-      padding: 60px 20px;
+      padding: 50px 20px;
       text-align: center;
     }
 
     .feedbacks-title {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: bold;
       color: #d62828;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
     }
 
     .carousel-container {
       position: relative;
-      width: 90%;
-      max-width: 900px;
-      margin: 0 auto;
+      width: 100%;
       overflow: hidden;
     }
 
     .carousel {
       display: flex;
-      transition: transform 1s ease-in-out;
-      padding: 40px 0;
+      transition: transform 0.8s ease-in-out;
+      padding: 20px 0;
     }
 
     .feedback-card {
       flex: 0 0 60%;
-      margin: 0 10px;
+      margin: 0 10%;
       background-color: #fff;
       border-radius: 12px;
       padding: 30px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
       text-align: center;
-      transition: transform 0.3s ease, filter 0.3s ease;
+      transition: transform 0.4s ease, filter 0.4s ease;
     }
 
     .feedback-card.blur {
-      filter: blur(2px) brightness(0.9);
-      transform: scale(0.95);
+      filter: blur(2px) brightness(0.8);
+      transform: scale(0.9);
     }
 
     .feedback-stars {
       color: #ffbe0b;
-      font-size: 26px;
-      margin-bottom: 15px;
+      font-size: 22px;
+      margin-bottom: 10px;
     }
 
     .feedback-text {
-      font-size: 20px;
-      margin-bottom: 20px;
+      font-size: 18px;
+      margin-bottom: 15px;
     }
 
     .feedback-author {
@@ -142,25 +140,30 @@
   const carousel = document.getElementById('carousel');
   const cards = Array.from(carousel.children);
   let index = 0;
-  const interval = 7000; // 7 seconds
+  const interval = 7000;
 
   function updateCarousel() {
-    const offset = index * 80; // Slide offset per card
-    carousel.style.transform = `translateX(-${offset}%)`;
+    const cardWidth = cards[0].offsetWidth + 20; // card + margin
+    const centerOffset = (carousel.offsetWidth - cards[0].offsetWidth) / 2;
+    const scrollPosition = index * (cardWidth + 20) - centerOffset;
+
+    carousel.style.transform = `translateX(-${scrollPosition}px)`;
 
     cards.forEach((card, i) => {
       card.classList.remove('blur');
-      if (i !== index) card.classList.add('blur');
+      if (i !== index) {
+        card.classList.add('blur');
+      }
     });
   }
 
-  // Auto-looping every 7s
   setInterval(() => {
-    index = (index + 1) % cards.length; // loop back to 0
+    index = (index + 1) % cards.length;
     updateCarousel();
   }, interval);
 
-  updateCarousel(); // Initial load
+  window.addEventListener("load", updateCarousel);
+  window.addEventListener("resize", updateCarousel);
 </script>
 
 </body>
