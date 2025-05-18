@@ -3,559 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ZustMeal</title>
+  <title>Customer Feedback Carousel</title>
   <style>
-    :root {
-      --yellow: rgb(255, 200, 45);
-      --red: rgb(220, 40, 30);
-      --text-dark: #000000;
-    }
-
     body {
+      font-family: Georgia, serif;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: white;
-      color: var(--text-dark);
-      scroll-behavior: smooth;
+      background-color: #f5f0e6;
+      color: #111;
     }
 
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .hero video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0) 100%);
-      z-index: 5;
-    }
-
-    .hero-content {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100%;
-  padding-bottom: 5rem;
-  text-align: center;
-  color: white;
-}
-
-    h1 {
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--red);
-      flex-wrap: wrap;
-    }
-
-    .typing-text {
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-      font-weight: bold;
-      color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid #fff;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .btn {
-      background: var(--red);
+    header {
+      background-color: #e63946;
       color: white;
-      padding: 0.5rem 0.6rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
     }
 
-    .btn:hover {
-      transform: scale(1.05);
-      background-color: rgb(200, 30, 20);
-    }
-
-    section {
-      padding: 4rem 1.5rem;
+    .feedbacks-section {
+      padding: 60px 20px;
       text-align: center;
     }
 
-    .section-heading {
-      font-size: 2rem;
-      color: var(--red);
-      margin-bottom: 2rem;
+    .feedbacks-title {
+      font-size: 36px;
+      font-weight: bold;
+      color: #d62828;
+      margin-bottom: 50px;
     }
 
-    .grid {
-      display: grid;
-      gap: 2rem;
+    .carousel-container {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow: hidden;
     }
 
-    .grid-cols-3,
-    .grid-cols-4,
-    .grid-cols-2 {
-      grid-template-columns: 1fr;
+    .carousel {
+      display: flex;
+      transition: transform 1s ease-in-out;
+      padding: 40px 0;
     }
 
-    @media (min-width: 600px) {
-      .grid-cols-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .feedback-card {
+      flex: 0 0 60%;
+      margin: 0 10px;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      text-align: center;
+      transition: transform 0.3s ease, filter 0.3s ease;
     }
 
-    @media (min-width: 768px) {
-      .grid-cols-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .grid-cols-4 {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      h1 {
-        font-size: 3rem;
-      }
-
-      .typing-text {
-        font-size: 1.2rem;
-      }
+    .feedback-card.blur {
+      filter: blur(2px) brightness(0.9);
+      transform: scale(0.95);
     }
 
-    .card {
-      background: var(--yellow);
-      border: 2px solid var(--red);
-      border-radius: 1rem;
-      padding: 2rem;
-      transition: transform 0.3s;
+    .feedback-stars {
+      color: #ffbe0b;
+      font-size: 26px;
+      margin-bottom: 15px;
     }
 
-    .card:hover {
-      transform: scale(1.05);
+    .feedback-text {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .feedback-author {
+      font-size: 16px;
+      color: #444;
+      font-style: italic;
     }
 
     footer {
-      background-color: var(--yellow);
-      padding: 1.5rem;
+      background-color: #f1f1f1;
       text-align: center;
-      color: var(--text-dark);
+      padding: 20px;
+      color: #777;
+      font-size: 14px;
     }
-
-    .whatsapp-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      padding: 0.75rem 1rem;
-      border-radius: 999px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      z-index: 999;
-      font-size: 0.9rem;
-    }
-
-    .whatsapp-btn:hover {
-      background-color: #fef9f0;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-    .feedbacks-section {
-  padding: 40px 20px;
-  background-color: #fff;
-  text-align: center;
-  overflow: hidden;
-}
-
-.feedbacks-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #e63946;
-  margin-bottom: 30px;
-}
-
-.feedbacks-carousel {
-  display: flex;
-  gap: 20px;
-  animation: scroll-left 20s linear infinite;
-}
-
-.feedback-card {
-  background: #f9f9f9;
-  border-radius: 20px;
-  padding: 20px;
-  min-width: 280px;
-  max-width: 300px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  flex-shrink: 0;
-}
-
-.feedback-stars {
-  font-size: 20px;
-  color: #f4a261;
-  margin-bottom: 10px;
-}
-
-.feedback-text {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 12px;
-}
-
-.feedback-author {
-  font-size: 14px;
-  font-style: italic;
-  color: #777;
-}
-
-/* Scroll animation */
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-    
   </style>
 </head>
 <body>
 
-  <!-- Hero Section -->
-  <div class="hero">
-    <video autoplay muted loop>
-      <source src="Hero Video.mp4" type="video/mp4" />
-    </video>
-    <div class="overlay"></div>
-    <div class="hero-content">
-      <h1 style="margin-bottom: 0.1rem;">
-        <span>Welcome to</span><br />
-        <img src="your-logo-url-here.png" alt="ZustMeal Logo" style="height: 4.3rem; margin-top: 0.5rem;" />
-      </h1>
-      <p id="typing-text" class="typing-text"></p>
-      <a href="#choose-plan" class="btn" style="margin-bottom: 10rem; margin-top: -0.25rem;">Try 3-Day Trial Plan →</a>
-    </div>
-  </div>
+<header>
+  Dhruba's Tiffin Services
+</header>
 
-  <!-- How it Works Section -->
-  <section>
-    <h2 class="section-heading">How ZustMeal Works</h2>
-    <div class="grid grid-cols-3">
-      <div><h3>🥘Choose Your Taste</h3><p>Select from partner kitchens offering tasty, hygienic meals.(Comeing Soon) </p></div> 
-      <div><h3>🏍 Get It Delivered</h3><p>Delivered by us — hot & fresh.</p></div>
-      <div><h3>💚 Enjoy Everyday</h3><p>Affordable, home-style meals designed for students, office-goers & more.</p></div>
-    </div>
-  </section>
-
-  <!-- Why Choose Section -->
-  <section style="background-color: #fef9f0;">
-    <h2 class="section-heading">Why Choose ZustMeal?</h2>
-    <div class="grid grid-cols-4">
-      <div><h3>✅ Verified Kitchens</h3><p>Only trusted partner kitchens.</p></div>
-      <div><h3>📦 Flexible Plans</h3><p>Trial, Half-Month & Monthly options to suit your routine.</p></div>
-      <div><h3>💳 Easy Payments</h3><p>UPI, Online payment — accepted.</p></div>
-      <div><h3>📞 Customer Support</h3><p>Chat with us instantly on WhatsApp.</p></div>
-    </div>
-  </section>
-
-  <!-- Choose Plan Section -->
-  <section id="choose-plan">
-    <h2 class="section-heading">🍽️ Flexible Meal Plans</h2>
-    <div class="grid grid-cols-3">
-      <div class="card">
-        <h3>3-Day Trial</h3>
-        <p><strong>Only ₹159</strong></p>
-        <p>Try us out — no commitments.</p>
-        <a href="price.html" class="btn">Choose Plan</a>
-      </div>
-      <div class="card">
-        <h3>Mid-Month Magic</h3>
-        <p>Enjoy 15 days of homestyle meals.</p>
-        <a href="price.html" class="btn">Choose Your Plan</a>
-      </div>
-      <div class="card">
-        <h3>Monthly Munchies</h3>
-        <p>Perfect for regular tiffin needs.</p>
-        <a href="price.html" class="btn">Choose Your Plan</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Refer and Earn -->
-  <section style="background-color: #fef9f0;">
-    <h2 class="section-heading">Refer and Earn</h2>
-    <p>Invite your friends and get ₹30 credit when they subscribe.</p>
-    <a 
-      href="https://wa.me/919365294816?text=Yo%2C%20send%20me%20my%20referral%20link.%20I%20want%20to%20refer%20a%20friend."
-      class="btn"
-      style="background-color: green;"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Refer a Friend
-    </a>
-  </section>
-  
 <section class="feedbacks-section">
-  <h2 class="feedbacks-title">What Our Customers Say</h2>
+  <h2 class="feedbacks-title">What Our Customers Says</h2>
 
-  <div class="feedbacks-carousel" id="feedback-carousel">
-    <!-- Feedback Card -->
-    <div class="feedback-card">
-      <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
-      <p class="feedback-text">"Delicious meals and super punctual delivery!"</p>
-      <p class="feedback-author">– Ramesh S., Mumbai</p>
+  <div class="carousel-container">
+    <div class="carousel" id="carousel">
+      <div class="feedback-card">
+        <div class="feedback-stars">★★★★★</div>
+        <div class="feedback-text">Delicious meals and super punctual delivery</div>
+        <div class="feedback-author">– Ramesh S., Mumbai</div>
+      </div>
+
+      <div class="feedback-card">
+        <div class="feedback-stars">★★★★☆</div>
+        <div class="feedback-text">Very hygienic and filling. I love the variety.</div>
+        <div class="feedback-author">– Anjali P., Pune</div>
+      </div>
+
+      <div class="feedback-card">
+        <div class="feedback-stars">★★★★★</div>
+        <div class="feedback-text">Affordable, healthy, and home-style food.</div>
+        <div class="feedback-author">– Karan T., Delhi</div>
+      </div>
+
+      <div class="feedback-card">
+        <div class="feedback-stars">★★★★★</div>
+        <div class="feedback-text">Feels like home! Neat packaging and fast delivery.</div>
+        <div class="feedback-author">– Meena V., Hyderabad</div>
+      </div>
+
+      <div class="feedback-card">
+        <div class="feedback-stars">★★★★☆</div>
+        <div class="feedback-text">Great value for money. Highly recommended!</div>
+        <div class="feedback-author">– Rohit G., Chennai</div>
+      </div>
     </div>
-
-    <div class="feedback-card">
-      <div class="feedback-stars">⭐⭐⭐⭐</div>
-      <p class="feedback-text">"Very hygienic and filling. I love the variety."</p>
-      <p class="feedback-author">– Anjali P., Pune</p>
-    </div>
-
-    <div class="feedback-card">
-      <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
-      <p class="feedback-text">"Affordable, healthy, and home-style food."</p>
-      <p class="feedback-author">– Karan T., Delhi</p>
-    </div>
-
-    <!-- Repeat cards as needed -->
   </div>
 </section>
-  
-  <!-- WhatsApp Floating Chat -->
-  <a
-    href="https://wa.me/919365294816?text=Hi%20ZustMeal.%20I'm%20new%20in%20the%20city%20and%20interested%20in%20your%20tiffin%20service.%20Can%20you%20please%20share%20the%20menu%20and%20trial%20plan%20details%3F"
-    class="whatsapp-btn"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    🗨️
-  </a>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 ZustMeal. Made with ❤️ for your hunger.</p>
-  </footer>
+<footer>
+  &copy; 2025 Dhruba's Tiffin Services. All rights reserved.
+</footer>
 
-  <!-- Typing/Erasing Script -->
-  <script>
-    const textElement = document.getElementById("typing-text");
-    const textToType = "Fresh, home-style meals delivered with care.";
-    let index = 0;
-    let isDeleting = false;
-
-    function typeEffect() {
-      if (isDeleting) {
-        textElement.textContent = textToType.substring(0, index--);
-      } else {
-        textElement.textContent = textToType.substring(0, index++);
-      }
-
-      if (!isDeleting && index === textToType.length) {
-        setTimeout(() => isDeleting = true, 1200); // Wait before erasing
-      } else if (isDeleting && index === 0) {
-        isDeleting = false;
-      }
-
-      setTimeout(typeEffect, isDeleting ? 40 : 80);
-    }
-
-    document.addEventListener("DOMContentLoaded", typeEffect);
-  </script> 
-  <!-- Dice Discount Modal -->
-<div id="diceModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
-  <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; text-align: center; position: relative;">
-    <h2>🎲 Tap the Dice to Reveal Your Discount</h2>
-
-    <div class="dice-wrapper" id="diceArea" style="display: flex; justify-content: center; gap: 10px; margin: 40px 0; cursor: pointer;">
-      <div class="scene" id="scene1" style="width: 100px; height: 100px; perspective: 800px;">
-        <div class="cube" id="dice1" style="width: 100px; height: 100px; position: relative; transform-style: preserve-3d; transition: transform 1s;">
-          <div class="face face1"><div class="dots one"></div></div>
-          <div class="face face2"><div class="dots two"><div></div><div></div></div></div>
-          <div class="face face3"><div class="dots three"><div></div><div></div><div></div></div></div>
-          <div class="face face4"><div class="dots four"><div></div><div></div><div></div><div></div></div></div>
-          <div class="face face5"><div class="dots five"><div></div><div></div><div></div><div></div><div></div></div></div>
-          <div class="face face6"><div class="dots six"><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-        </div>
-      </div>
-      <div class="scene" id="scene2" style="width: 100px; height: 100px; perspective: 800px;">
-        <div class="cube" id="dice2" style="width: 100px; height: 100px; position: relative; transform-style: preserve-3d; transition: transform 1s;">
-          <div class="face face1"><div class="dots one"></div></div>
-          <div class="face face2"><div class="dots two"><div></div><div></div></div></div>
-          <div class="face face3"><div class="dots three"><div></div><div></div><div></div></div></div>
-          <div class="face face4"><div class="dots four"><div></div><div></div><div></div><div></div></div></div>
-          <div class="face face5"><div class="dots five"><div></div><div></div><div></div><div></div><div></div></div></div>
-          <div class="face face6"><div class="dots six"><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="result" id="result" style="font-size: 22px; font-weight: bold; margin-top: 15px;">Click the dice to roll</div>
-    <button id="copyBtn" class="copy-btn" style="margin-top: 15px; display:none; padding: 10px 20px; font-size: 16px; border: none; background-color: #007BFF; color: white; border-radius: 8px;">📋 Copy Code</button>
-    <button onclick="closeDiceModal()" style="margin-top: 20px; display:block; background: transparent; border: none; color: #007BFF; cursor: pointer;">Close</button>
-  </div>
-</div>
-
-<!-- Dice Styles (inline or move to <style>) -->
-<style>
-  .face {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: white;
-    border: 2px solid #444;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backface-visibility: hidden;
-  }
-
-  .face1 { transform: rotateY(0deg) translateZ(50px); }
-  .face2 { transform: rotateY(180deg) translateZ(50px); }
-  .face3 { transform: rotateY(-90deg) translateZ(50px); }
-  .face4 { transform: rotateY(90deg) translateZ(50px); }
-  .face5 { transform: rotateX(90deg) translateZ(50px); }
-  .face6 { transform: rotateX(-90deg) translateZ(50px); }
-
-  .dots { width: 100%; height: 100%; position: relative; }
-  .dots.one::before {
-    content: ''; width: 14px; height: 14px; background: #000; border-radius: 50%;
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  }
-
-  .dots.two div:nth-child(1) { top: 25%; left: 25%; }
-  .dots.two div:nth-child(2) { bottom: 25%; right: 25%; }
-
-  .dots.three div:nth-child(1) { top: 25%; left: 25%; }
-  .dots.three div:nth-child(2) { bottom: 25%; right: 25%; }
-  .dots.three div:nth-child(3) { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-
-  .dots.four div:nth-child(1) { top: 25%; left: 25%; }
-  .dots.four div:nth-child(2) { top: 25%; right: 25%; }
-  .dots.four div:nth-child(3) { bottom: 25%; left: 25%; }
-  .dots.four div:nth-child(4) { bottom: 25%; right: 25%; }
-
-  .dots.five div:nth-child(1) { top: 25%; left: 25%; }
-  .dots.five div:nth-child(2) { top: 25%; right: 25%; }
-  .dots.five div:nth-child(3) { bottom: 25%; left: 25%; }
-  .dots.five div:nth-child(4) { bottom: 25%; right: 25%; }
-  .dots.five div:nth-child(5) { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-
-  .dots.six div:nth-child(1) { top: 20%; left: 25%; }
-  .dots.six div:nth-child(2) { top: 20%; right: 25%; }
-  .dots.six div:nth-child(3) { top: 50%; left: 25%; }
-  .dots.six div:nth-child(4) { top: 50%; right: 25%; }
-  .dots.six div:nth-child(5) { bottom: 20%; left: 25%; }
-  .dots.six div:nth-child(6) { bottom: 20%; right: 25%; }
-
-  .dots div {
-    width: 14px;
-    height: 14px;
-    background: #000;
-    border-radius: 50%;
-    position: absolute;
-  }
-</style>
-
-<!-- Dice Modal Script -->
 <script>
-  const diceArea = document.getElementById('diceArea');
-  const dice1 = document.getElementById('dice1');
-  const dice2 = document.getElementById('dice2');
-  const result = document.getElementById('result');
-  const copyBtn = document.getElementById('copyBtn');
-  const modal = document.getElementById('diceModal');
+  const carousel = document.getElementById('carousel');
+  const cards = Array.from(carousel.children);
+  let index = 0;
+  const interval = 7000; // 7 seconds
 
-  const rotations = [
-    [0, 0],
-    [0, 180],
-    [0, -90],
-    [0, 90],
-    [90, 0],
-    [-90, 0]
-  ];
+  function updateCarousel() {
+    const offset = index * 80; // Slide offset per card
+    carousel.style.transform = `translateX(-${offset}%)`;
 
-  let code = "";
-
-  function rollDice() {
-    if (sessionStorage.getItem('discountRolled')) return;
-
-    let d1, d2, total;
-    do {
-      d1 = Math.floor(Math.random() * 6);
-      d2 = Math.floor(Math.random() * 6);
-      total = d1 + d2 + 2;
-    } while ((d1 === 5 && d2 === 4) || (d1 === 4 && d2 === 5) || (d1 === 5 && d2 === 5) || total > 10);
-
-    const r1 = rotations[d1];
-    const r2 = rotations[d2];
-
-    dice1.style.transform = `rotateX(${r1[0]}deg) rotateY(${r1[1]}deg)`;
-    dice2.style.transform = `rotateX(${r2[0]}deg) rotateY(${r2[1]}deg)`;
-
-    code = `Zust${total}`;
-    result.textContent = `🎉 Your code: ${code}`;
-    copyBtn.style.display = 'inline-block';
-    diceArea.classList.add('disabled');
-    sessionStorage.setItem('discountRolled', 'true');
-
-    if (navigator.vibrate) navigator.vibrate(200);
+    cards.forEach((card, i) => {
+      card.classList.remove('blur');
+      if (i !== index) card.classList.add('blur');
+    });
   }
 
-  diceArea.addEventListener('click', rollDice);
+  // Auto-looping every 7s
+  setInterval(() => {
+    index = (index + 1) % cards.length; // loop back to 0
+    updateCarousel();
+  }, interval);
 
-  copyBtn.addEventListener('click', () => {
-    if (code) {
-      navigator.clipboard.writeText(code).then(() => {
-        copyBtn.textContent = "✅ Copied!";
-        setTimeout(() => { copyBtn.textContent = "📋 Copy Code"; }, 2000);
-      });
-    }
-  });
-
-  function closeDiceModal() {
-    modal.style.display = "none";
-  }
-
-  // Show modal on load
-  window.onload = function () {
-    if (!sessionStorage.getItem('discountRolled')) {
-      modal.style.display = "flex";
-    }
-  };
-  /* Feedbacks*/
-  const carousel = document.getElementById("feedback-carousel");
-  const cards = carousel.innerHTML;
-  carousel.innerHTML += cards; // duplicate cards for infinite scroll
-
+  updateCarousel(); // Initial load
 </script>
 
 </body>
