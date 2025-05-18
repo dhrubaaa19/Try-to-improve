@@ -185,6 +185,64 @@
       max-width: 100%;
       height: auto;
     }
+    .feedbacks-section {
+  padding: 40px 20px;
+  background-color: #fff;
+  text-align: center;
+  overflow: hidden;
+}
+
+.feedbacks-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #e63946;
+  margin-bottom: 30px;
+}
+
+.feedbacks-carousel {
+  display: flex;
+  gap: 20px;
+  animation: scroll-left 20s linear infinite;
+}
+
+.feedback-card {
+  background: #f9f9f9;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 280px;
+  max-width: 300px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.feedback-stars {
+  font-size: 20px;
+  color: #f4a261;
+  margin-bottom: 10px;
+}
+
+.feedback-text {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.feedback-author {
+  font-size: 14px;
+  font-style: italic;
+  color: #777;
+}
+
+/* Scroll animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+    
   </style>
 </head>
 <body>
@@ -263,7 +321,34 @@
       Refer a Friend
     </a>
   </section>
+  
+<section class="feedbacks-section">
+  <h2 class="feedbacks-title">What Our Customers Say</h2>
 
+  <div class="feedbacks-carousel" id="feedback-carousel">
+    <!-- Feedback Card -->
+    <div class="feedback-card">
+      <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
+      <p class="feedback-text">"Delicious meals and super punctual delivery!"</p>
+      <p class="feedback-author">– Ramesh S., Mumbai</p>
+    </div>
+
+    <div class="feedback-card">
+      <div class="feedback-stars">⭐⭐⭐⭐</div>
+      <p class="feedback-text">"Very hygienic and filling. I love the variety."</p>
+      <p class="feedback-author">– Anjali P., Pune</p>
+    </div>
+
+    <div class="feedback-card">
+      <div class="feedback-stars">⭐⭐⭐⭐⭐</div>
+      <p class="feedback-text">"Affordable, healthy, and home-style food."</p>
+      <p class="feedback-author">– Karan T., Delhi</p>
+    </div>
+
+    <!-- Repeat cards as needed -->
+  </div>
+</section>
+  
   <!-- WhatsApp Floating Chat -->
   <a
     href="https://wa.me/919365294816?text=Hi%20ZustMeal.%20I'm%20new%20in%20the%20city%20and%20interested%20in%20your%20tiffin%20service.%20Can%20you%20please%20share%20the%20menu%20and%20trial%20plan%20details%3F"
@@ -466,6 +551,11 @@
       modal.style.display = "flex";
     }
   };
+  /* Feedbacks*/
+  const carousel = document.getElementById("feedback-carousel");
+  const cards = carousel.innerHTML;
+  carousel.innerHTML += cards; // duplicate cards for infinite scroll
+
 </script>
 
 </body>
