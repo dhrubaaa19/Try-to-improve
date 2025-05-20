@@ -2,192 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Customer Feedback</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testimonial Carousel</title>
   <style>
     body {
-      font-family: Georgia, serif;
       margin: 0;
-      background-color: #f5f0e6;
-      color: #111;
-    }
-
-    header {
-      background-color: #e63946;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .feedbacks-section {
-      padding: 50px 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f1e6;
+      padding: 40px 20px;
       text-align: center;
     }
 
-    .feedbacks-title {
-      font-size: 32px;
-      font-weight: bold;
-      color: #d62828;
+    h2 {
+      color: #c62828;
+      font-size: 2em;
       margin-bottom: 40px;
     }
 
-    .carousel-container {
-      position: relative;
-      width: 100%;
+    .carousel-wrapper {
       overflow: hidden;
+      width: 100%;
+      position: relative;
     }
 
-    .carousel {
+    .carousel-track {
       display: flex;
-      gap: 20px;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.8s ease-in-out;
+      animation: scrollLeft 30s linear infinite;
     }
 
-    .feedback-card {
-      flex: 0 0 60%;
-      background-color: #fff;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-      text-align: center;
-      opacity: 0;
-      transform: scale(0.9) translateX(30px);
-      filter: blur(2px) brightness(0.8);
-      transition: all 0.8s ease-in-out;
-      position: absolute;
-      top: 0;
-      left: 20%;
-      right: 20%;
-      margin: auto;
-      z-index: 0;
+    .testimonial {
+      flex: 0 0 300px;
+      background-color: white;
+      margin: 0 20px;
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .feedback-card.active {
-      opacity: 1;
-      transform: scale(1) translateX(0);
-      filter: none;
-      z-index: 2;
-    }
-
-    .feedback-card.prev,
-    .feedback-card.next {
-      opacity: 0.6;
-      filter: blur(2px);
-      z-index: 1;
-      transform: scale(0.9) translateX(-100%);
-    }
-
-    .feedback-stars {
-      color: #ffbe0b;
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-
-    .feedback-text {
-      font-size: 18px;
+    .stars {
+      color: gold;
+      font-size: 1.5em;
       margin-bottom: 15px;
     }
 
-    .feedback-author {
-      font-size: 16px;
-      color: #444;
-      font-style: italic;
+    .testimonial p {
+      font-size: 1.1em;
+      color: #333;
     }
 
-    footer {
-      background-color: #f1f1f1;
-      text-align: center;
-      padding: 20px;
-      color: #777;
-      font-size: 14px;
+    .testimonial span {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #555;
     }
 
-    @media (max-width: 768px) {
-      .feedback-card {
-        left: 10%;
-        right: 10%;
+    @keyframes scrollLeft {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Responsive tweak */
+    @media (max-width: 600px) {
+      .testimonial {
+        flex: 0 0 250px;
+        margin: 0 10px;
       }
     }
   </style>
 </head>
 <body>
 
-<header>
-  Dhruba's Tiffin Services
-</header>
+  <h2>What Our Customers Say</h2>
 
-<section class="feedbacks-section">
-  <h2 class="feedbacks-title">What Our Customers Says</h2>
-
-  <div class="carousel-container" style="height: 300px;">
-    <div class="carousel" id="carousel">
-      <div class="feedback-card">
-        <div class="feedback-stars">★★★★★</div>
-        <div class="feedback-text">Delicious meals and super punctual delivery</div>
-        <div class="feedback-author">– Ramesh S., Mumbai</div>
+  <div class="carousel-wrapper">
+    <div class="carousel-track">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Delicious meals and super punctual delivery</p>
+        <span>– Ramesh S., Mumbai</span>
       </div>
-
-      <div class="feedback-card">
-        <div class="feedback-stars">★★★★☆</div>
-        <div class="feedback-text">Very hygienic and filling. I love the variety.</div>
-        <div class="feedback-author">– Anjali P., Pune</div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Healthy, tasty, and affordable food!</p>
+        <span>– Priya M., Pune</span>
       </div>
-
-      <div class="feedback-card">
-        <div class="feedback-stars">★★★★★</div>
-        <div class="feedback-text">Affordable, healthy, and home-style food.</div>
-        <div class="feedback-author">– Karan T., Delhi</div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Very convenient and filling portions</p>
+        <span>– Akash J., Bangalore</span>
       </div>
-
-      <div class="feedback-card">
-        <div class="feedback-stars">★★★★★</div>
-        <div class="feedback-text">Feels like home! Neat packaging and fast delivery.</div>
-        <div class="feedback-author">– Meena V., Hyderabad</div>
+      <!-- Repeating for infinite effect -->
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Delicious meals and super punctual delivery</p>
+        <span>– Ramesh S., Mumbai</span>
       </div>
-
-      <div class="feedback-card">
-        <div class="feedback-stars">★★★★☆</div>
-        <div class="feedback-text">Great value for money. Highly recommended!</div>
-        <div class="feedback-author">– Rohit G., Chennai</div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Healthy, tasty, and affordable food!</p>
+        <span>– Priya M., Pune</span>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>Very convenient and filling portions</p>
+        <span>– Akash J., Bangalore</span>
       </div>
     </div>
   </div>
-</section>
-
-<footer>
-  &copy; 2025 Dhruba's Tiffin Services. All rights reserved.
-</footer>
-
-<script>
-  const cards = document.querySelectorAll('.feedback-card');
-  let current = 0;
-  const interval = 7000;
-
-  function showCard(index) {
-    cards.forEach((card, i) => {
-      card.classList.remove('active', 'prev', 'next');
-      if (i === index) {
-        card.classList.add('active');
-      } else if (i === (index + 1) % cards.length) {
-        card.classList.add('next');
-      } else if (i === (index - 1 + cards.length) % cards.length) {
-        card.classList.add('prev');
-      }
-    });
-  }
-
-  setInterval(() => {
-    current = (current + 1) % cards.length;
-    showCard(current);
-  }, interval);
-
-  window.addEventListener('load', () => showCard(current));
-</script>
 
 </body>
 </html>
