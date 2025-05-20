@@ -3,20 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mobile 3D Carousel</title>
+  <title>Infinite Apple-Style Carousel</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: #fdfcf9;
+      background: #f9f6ef;
       font-family: Georgia, serif;
     }
 
-    .carousel-container {
-      padding: 30px 0;
-      width: 100%;
+    .carousel-wrapper {
       max-width: 400px;
-      margin: auto;
+      margin: 50px auto;
+      padding: 0 10px;
       overflow: hidden;
     }
 
@@ -25,97 +23,137 @@
       font-size: 1.8em;
       color: #b22222;
       margin-bottom: 30px;
-      line-height: 1.3;
+      line-height: 1.4;
     }
 
     .carousel-track {
       display: flex;
-      transition: transform 0.6s ease-in-out;
+      transition: transform 0.6s ease;
       will-change: transform;
     }
 
-    .card {
+    .carousel-card {
       flex: 0 0 80%;
       margin: 0 10px;
       background: white;
+      padding: 25px;
       border-radius: 16px;
-      padding: 25px 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       text-align: center;
-      opacity: 0.6;
       transform: scale(0.9);
+      opacity: 0.5;
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
-    .card.active {
+    .carousel-card.active {
       transform: scale(1);
       opacity: 1;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
     }
 
     .stars {
-      color: gold;
+      color: #f4c430;
       font-size: 24px;
       margin-bottom: 10px;
     }
 
-    .card p {
+    .carousel-card p {
       font-size: 1.05em;
-      margin: 15px 0;
+      margin-bottom: 15px;
     }
 
-    .card span {
+    .carousel-card span {
       font-weight: bold;
       font-style: italic;
       font-size: 0.95em;
-      color: #444;
+      color: #333;
     }
   </style>
 </head>
 <body>
 
-  <div class="carousel-container">
+  <div class="carousel-wrapper">
     <h2>What Our<br>Customers Says</h2>
     <div class="carousel-track" id="carousel">
-      <div class="card active">
-        <div class="stars">★★★★★</div>
-        <p>Delicious meals and super punctual delivery</p>
-        <span>– Ramesh S., Mumbai</span>
-      </div>
-      <div class="card">
-        <div class="stars">★★★★★</div>
-        <p>Healthy, tasty, and affordable food</p>
-        <span>– Priya M., Pune</span>
-      </div>
-      <div class="card">
-        <div class="stars">★★★★★</div>
-        <p>Very convenient and filling portions</p>
-        <span>– Akash J., Bangalore</span>
-      </div>
+      <!-- Slides will be dynamically filled -->
     </div>
   </div>
 
   <script>
-    const track = document.getElementById("carousel");
-    const cards = track.querySelectorAll(".card");
-    let index = 0;
+    const reviews = [
+      {
+        stars: "★★★★★",
+        text: "Delicious meals and super punctual delivery",
+        author: "– Ramesh S., Mumbai"
+      },
+      {
+        stars: "★★★★★",
+        text: "Healthy, tasty, and affordable food",
+        author: "– Priya M., Pune"
+      },
+      {
+        stars: "★★★★★",
+        text: "Very convenient and filling portions",
+        author: "– Akash J., Bangalore"
+      }
+    ];
 
-    function updateCarousel() {
+    const carousel = document.getElementById("carousel");
+
+    // Duplicate slides for infinite scroll
+    const slides = [...reviews, ...reviews];
+
+    slides.forEach((review, i) => {
+      const card = document.createElement("div");
+      card.className = "carousel-card";
+      card.innerHTML = `
+        <div class="stars">${review.stars}</div>
+        <p>${review.text}</p>
+        <span>${review.author}</span>
+      `;
+      carousel.appendChild(card);
+    });
+
+    const cards = document.querySelectorAll(".carousel-card");
+    const visibleCount = reviews.length;
+    let index = 0;
+    let offset = 0;
+
+    function updateActiveSlide() {
       cards.forEach((card, i) => {
         card.classList.remove("active");
       });
-      cards[index].classList.add("active");
 
-      const cardWidth = cards[0].offsetWidth + 20; // 80% + margin
-      const centerOffset = (track.offsetWidth - cards[0].offsetWidth) / 2;
-      const moveX = index * cardWidth - centerOffset;
-      track.style.transform = `translateX(-${moveX}px)`;
-
-      index = (index + 1) % cards.length;
+      const activeIndex = (index + visibleCount) % cards.length;
+      cards[activeIndex].classList.add("active");
     }
 
-    setInterval(updateCarousel, 3000); // 2s pause + 1s transition
-    window.addEventListener("load", updateCarousel);
+    function slideNext() {
+      index++;
+      offset = index * (cards[0].offsetWidth + 20);
+
+      if (index >= cards.length - visibleCount) {
+        // Reset seamlessly
+        carousel.style.transition = "none";
+        index = 0;
+        offset = 0;
+        carousel.style.transform = `translateX(0px)`;
+        updateActiveSlide();
+        // Force reflow
+        void carousel.offsetWidth;
+        carousel.style.transition = "transform 0.6s ease";
+        setTimeout(slideNext, 3000); // continue
+        return;
+      }
+
+      carousel.style.transform = `translateX(-${offset}px)`;
+      updateActiveSlide();
+    }
+
+    setTimeout(() => {
+      updateActiveSlide();
+      setInterval(slideNext, 3000);
+    }, 300); // Initial pause
   </script>
 
 </body>
