@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Infinite Apple-Style Carousel</title>
+  <title>Perfect Apple-Style Carousel</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: #f9f6ef;
       font-family: Georgia, serif;
+      background: #f9f6ef;
     }
 
-    .carousel-wrapper {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 0 10px;
+    .carousel-container {
+      max-width: 100%;
       overflow: hidden;
+      padding: 50px 0;
     }
 
     h2 {
@@ -23,12 +23,17 @@
       font-size: 1.8em;
       color: #b22222;
       margin-bottom: 30px;
-      line-height: 1.4;
+    }
+
+    .carousel-track-wrapper {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
     }
 
     .carousel-track {
       display: flex;
-      transition: transform 0.6s ease;
+      transition: transform 0.6s ease-in-out;
       will-change: transform;
     }
 
@@ -36,19 +41,19 @@
       flex: 0 0 80%;
       margin: 0 10px;
       background: white;
-      padding: 25px;
       border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 25px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
       text-align: center;
-      transform: scale(0.9);
       opacity: 0.5;
-      transition: transform 0.5s ease, opacity 0.5s ease;
+      transform: scale(0.9);
+      transition: all 0.4s ease;
     }
 
     .carousel-card.active {
       transform: scale(1);
       opacity: 1;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     }
 
     .stars {
@@ -58,24 +63,32 @@
     }
 
     .carousel-card p {
-      font-size: 1.05em;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      margin-bottom: 12px;
     }
 
     .carousel-card span {
-      font-weight: bold;
       font-style: italic;
+      font-weight: bold;
+      color: #444;
       font-size: 0.95em;
-      color: #333;
+    }
+
+    @media (max-width: 600px) {
+      .carousel-card {
+        flex: 0 0 85%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="carousel-wrapper">
+  <div class="carousel-container">
     <h2>What Our<br>Customers Says</h2>
-    <div class="carousel-track" id="carousel">
-      <!-- Slides will be dynamically filled -->
+    <div class="carousel-track-wrapper">
+      <div class="carousel-track" id="carousel">
+        <!-- Slides will be added by JS -->
+      </div>
     </div>
   </div>
 
@@ -98,62 +111,56 @@
       }
     ];
 
-    const carousel = document.getElementById("carousel");
+    const carousel = document.getElementById('carousel');
 
-    // Duplicate slides for infinite scroll
-    const slides = [...reviews, ...reviews];
-
-    slides.forEach((review, i) => {
-      const card = document.createElement("div");
-      card.className = "carousel-card";
-      card.innerHTML = `
+    // Duplicate the slides for seamless loop
+    const data = [...reviews, ...reviews];
+    data.forEach((review) => {
+      const div = document.createElement('div');
+      div.className = 'carousel-card';
+      div.innerHTML = `
         <div class="stars">${review.stars}</div>
         <p>${review.text}</p>
         <span>${review.author}</span>
       `;
-      carousel.appendChild(card);
+      carousel.appendChild(div);
     });
 
-    const cards = document.querySelectorAll(".carousel-card");
-    const visibleCount = reviews.length;
+    const cards = document.querySelectorAll('.carousel-card');
     let index = 0;
-    let offset = 0;
+    const visibleCount = reviews.length;
+    const cardWidth = cards[0].offsetWidth + 20;
 
-    function updateActiveSlide() {
+    function setActiveCard() {
       cards.forEach((card, i) => {
-        card.classList.remove("active");
+        card.classList.remove('active');
       });
-
       const activeIndex = (index + visibleCount) % cards.length;
-      cards[activeIndex].classList.add("active");
+      cards[activeIndex].classList.add('active');
     }
 
-    function slideNext() {
+    function slideCarousel() {
       index++;
-      offset = index * (cards[0].offsetWidth + 20);
+      const offset = index * cardWidth;
 
       if (index >= cards.length - visibleCount) {
-        // Reset seamlessly
-        carousel.style.transition = "none";
+        carousel.style.transition = 'none';
         index = 0;
-        offset = 0;
         carousel.style.transform = `translateX(0px)`;
-        updateActiveSlide();
-        // Force reflow
+        setActiveCard();
         void carousel.offsetWidth;
-        carousel.style.transition = "transform 0.6s ease";
-        setTimeout(slideNext, 3000); // continue
-        return;
+        carousel.style.transition = 'transform 0.6s ease-in-out';
+      } else {
+        carousel.style.transform = `translateX(-${offset}px)`;
+        setActiveCard();
       }
-
-      carousel.style.transform = `translateX(-${offset}px)`;
-      updateActiveSlide();
     }
 
-    setTimeout(() => {
-      updateActiveSlide();
-      setInterval(slideNext, 3000);
-    }, 300); // Initial pause
+    // Kick off
+    window.onload = () => {
+      setActiveCard();
+      setInterval(slideCarousel, 3000);
+    };
   </script>
 
 </body>
