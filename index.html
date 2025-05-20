@@ -2,59 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Testimonial Carousel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Testimonials Carousel</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f1e6;
       padding: 40px 20px;
-      text-align: center;
+      background-color: #f5f1e6;
+      font-family: 'Georgia', serif;
+      color: #111;
     }
 
-    h2 {
+    .heading {
+      text-align: center;
+      font-size: 2.2em;
       color: #c62828;
-      font-size: 2em;
-      margin-bottom: 40px;
+      line-height: 1.2;
+      margin-bottom: 50px;
     }
 
     .carousel-wrapper {
       overflow: hidden;
       width: 100%;
-      position: relative;
     }
 
     .carousel-track {
       display: flex;
-      animation: scrollLeft 30s linear infinite;
+      animation: scrollLeft 25s linear infinite;
     }
 
     .testimonial {
-      flex: 0 0 300px;
-      background-color: white;
+      background-color: #ffffff;
+      padding: 30px 25px;
       margin: 0 20px;
-      padding: 30px 20px;
+      min-width: 300px;
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      flex: 0 0 auto;
+      text-align: center;
     }
 
     .stars {
-      color: gold;
-      font-size: 1.5em;
-      margin-bottom: 15px;
+      color: #f4c430;
+      font-size: 28px;
+      margin-bottom: 20px;
     }
 
     .testimonial p {
-      font-size: 1.1em;
-      color: #333;
+      font-size: 1.2em;
+      margin-bottom: 15px;
     }
 
     .testimonial span {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-      color: #555;
+      font-size: 1em;
+      color: #333;
+      font-style: italic;
     }
 
     @keyframes scrollLeft {
@@ -66,21 +68,27 @@
       }
     }
 
-    /* Responsive tweak */
     @media (max-width: 600px) {
       .testimonial {
-        flex: 0 0 250px;
+        min-width: 250px;
         margin: 0 10px;
+      }
+
+      .heading {
+        font-size: 1.5em;
       }
     }
   </style>
 </head>
 <body>
 
-  <h2>What Our Customers Say</h2>
+  <div class="heading">
+    What Our<br>Customers says
+  </div>
 
   <div class="carousel-wrapper">
     <div class="carousel-track">
+      <!-- Testimonials - duplicated for seamless scroll -->
       <div class="testimonial">
         <div class="stars">★★★★★</div>
         <p>Delicious meals and super punctual delivery</p>
@@ -88,7 +96,7 @@
       </div>
       <div class="testimonial">
         <div class="stars">★★★★★</div>
-        <p>Healthy, tasty, and affordable food!</p>
+        <p>Healthy, tasty, and affordable food</p>
         <span>– Priya M., Pune</span>
       </div>
       <div class="testimonial">
@@ -96,7 +104,7 @@
         <p>Very convenient and filling portions</p>
         <span>– Akash J., Bangalore</span>
       </div>
-      <!-- Repeating for infinite effect -->
+      <!-- Repeat to make it continuous -->
       <div class="testimonial">
         <div class="stars">★★★★★</div>
         <p>Delicious meals and super punctual delivery</p>
@@ -104,7 +112,7 @@
       </div>
       <div class="testimonial">
         <div class="stars">★★★★★</div>
-        <p>Healthy, tasty, and affordable food!</p>
+        <p>Healthy, tasty, and affordable food</p>
         <span>– Priya M., Pune</span>
       </div>
       <div class="testimonial">
@@ -117,3 +125,4 @@
 
 </body>
 </html>
+          
